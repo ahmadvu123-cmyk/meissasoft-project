@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Database Schema Below
+
+enum Role {
+  ADMIN
+  WORKER
+}
+enum PaymentMethod {
+  CASH
+  BANK_TRANSFER
+  CHEQUE
+}
+enum DeductionType {
+  LOAN
+  TAX
+  FINE
+}
+enum WageType {
+  HOURLY
+  MONTHLY
+  DAILY
+}
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  HALF_DAY
+}
+enum PaymentStatus {
+  PAID
+  UNPAID
+}
+enum Currency {
+  PKR
+  USD
+}
+
+model Worker {
+  id               Int @id @default(autoincrement())
+  attendance       Attendance[] // One to Many Relation field
+  payroll          Payroll[]  // One to Many Relation field
+  wage_structure   WageStructure?  // One to One Relation field
+  name             String
+  phone_num        String
+  cnic             String
+  is_permanent     Boolean @default(false)
+  role             Role @default(WORKER)  // using enum
+}
+model Attendance {
+  id                 Int @id @default(autoincrement())
+  worker_id          Int
+  date               DateTime @db.Date
+  check_in           DateTime @db.Time(0)
+  check_out          DateTime? @db.Time(0)
+  total_hours        Int?
+  overtime_hours     Int?
+  attendence_status  AttendanceStatus @default(ABSENT)  // using enum
+  worker             Worker   @relation(fields: [worker_id], references: [id])
+}
+model Payroll {
+  id                    Int @id @default(autoincrement())
+  payroll_deductions    PayrollDeductions[]
+  worker_id             Int  // One to Many Relation field
+  payments              Payments?  //One to One Relation field
+  month                 String
+  year                  Int
+  days_present          Int
+  overtime_hours        Int
+  overtime_pay          Int
+  total_deductions      Int
+  net_salary            Int
+  currency              Currency  @default(PKR) // using enum
+  payment_status        PaymentStatus @default(UNPAID)  // using enum
+  worker                Worker   @relation(fields: [worker_id], references: [id])
+}
+model WageStructure {
+  id              Int @id @default(autoincrement())
+  worker_id       Int @unique  // One to One Relation field
+  wage_type       WageType @default(MONTHLY)  
+  base_salary     Int
+  payment_method  PaymentMethod @default(CHEQUE)  // using enum
+  worker          Worker   @relation(fields: [worker_id], references: [id])
+}
+model Deductions {
+  id                  Int @id @default(autoincrement())
+  payroll_deductions  PayrollDeductions[]  // One to Many Relation field
+  amount              Int
+  deduction_type      DeductionType  @default(TAX)  // using enum
+}
+model PayrollDeductions {
+  id                   Int @id @default(autoincrement())
+  deduction_id         Int
+  payroll_id           Int
+  deductions           Deductions  @relation(fields: [deduction_id], references: [id])
+  payroll              Payroll     @relation(fields: [payroll_id], references: [id])
+}
+model Payments {
+  id               Int   @id @default(autoincrement())
+  payroll_id       Int  @unique 
+  salary           Int
+  payment_date     DateTime @db.Date
+  payroll          Payroll  @relation(fields: [payroll_id], references: [id])
+}
