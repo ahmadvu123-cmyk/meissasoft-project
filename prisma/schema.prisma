@@ -78,11 +78,11 @@ model Payroll {
   payments              Payments?  //One to One Relation field
   month                 String
   year                  Int
-  days_present          Int
-  overtime_hours        Int
-  overtime_pay          Int
+  days_present          Int?
+  overtime_hours        Int?
+  overtime_pay          Int?
   total_deductions      Int
-  net_salary            Int
+  net_salary            Int?
   currency              Currency  @default(PKR) // using enum
   payment_status        PaymentStatus @default(UNPAID)  // using enum
   worker                Worker   @relation(fields: [worker_id], references: [id])
