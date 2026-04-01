@@ -9,9 +9,10 @@ import { ApiTags, ApiOperation } from '@nestjs/swagger';
 export class WorkerController {
     constructor(private service: WorkerService){}
 
-    @Post('/create-worker')
+    @Post()
     @ApiOperation({summary: 'Create a Worker'})
     create(@Body() dto: WorkerDto){
+        console.log('DTO:', dto);
         return this.service.createWorker(dto);
     }
     
