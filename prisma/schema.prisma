@@ -59,6 +59,8 @@ model Worker {
   cnic             String
   is_permanent     Boolean @default(false)
   role             Role @default(WORKER)  // using enum
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime? @updatedAt
 }
 model Attendance {
   id                 Int @id @default(autoincrement())
@@ -70,6 +72,8 @@ model Attendance {
   overtime_hours     Int?
   attendence_status  AttendanceStatus @default(ABSENT)  // using enum
   worker             Worker   @relation(fields: [worker_id], references: [id])
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime? @updatedAt
 }
 model Payroll {
   id                    Int @id @default(autoincrement())
@@ -86,6 +90,8 @@ model Payroll {
   currency              Currency  @default(PKR) // using enum
   payment_status        PaymentStatus @default(UNPAID)  // using enum
   worker                Worker   @relation(fields: [worker_id], references: [id])
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime? @updatedAt
 }
 model WageStructure {
   id              Int @id @default(autoincrement())
@@ -94,12 +100,16 @@ model WageStructure {
   base_salary     Int
   payment_method  PaymentMethod @default(CHEQUE)  // using enum
   worker          Worker   @relation(fields: [worker_id], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime? @updatedAt
 }
 model Deductions {
   id                  Int @id @default(autoincrement())
   payroll_deductions  PayrollDeductions[]  // One to Many Relation field
   amount              Int
   deduction_type      DeductionType  @default(TAX)  // using enum
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime? @updatedAt
 }
 model PayrollDeductions {
   id                   Int @id @default(autoincrement())
@@ -107,6 +117,8 @@ model PayrollDeductions {
   payroll_id           Int
   deductions           Deductions  @relation(fields: [deduction_id], references: [id])
   payroll              Payroll     @relation(fields: [payroll_id], references: [id])
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime? @updatedAt
 }
 model Payments {
   id               Int   @id @default(autoincrement())
@@ -114,4 +126,6 @@ model Payments {
   salary           Int
   payment_date     DateTime @db.Date
   payroll          Payroll  @relation(fields: [payroll_id], references: [id])
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime? @updatedAt
 }

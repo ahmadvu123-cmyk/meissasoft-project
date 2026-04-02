@@ -8,6 +8,8 @@ import { ApiTags, ApiOperation } from '@nestjs/swagger';
 export class AttendanceController {
     constructor(private service: AttendanceService){}
 
+    // Global Validation Pipes Applies on all routes
+
     @Get()
     @ApiOperation({summary: 'Get all Attendances'})
     findAttendance(){

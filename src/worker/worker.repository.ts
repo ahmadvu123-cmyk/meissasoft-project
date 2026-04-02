@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { WorkerDto } from "./dto/worker.dto";
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { Prisma } from "@prisma/client";
 
 
 @Injectable()
@@ -11,12 +10,12 @@ export class WorkerRepository {
     async findMany(){
         return this.prisma.worker.findMany();
     }
-    async create(data: WorkerDto){
+    async create(data: Prisma.WorkerCreateInput){
         return this.prisma.worker.create({
             data,
         });
     }
-    async update(id: number, data: WorkerDto){
+    async update(id: number, data: Prisma.WorkerCreateInput){
         return this.prisma.worker.update({
             where: { id },
             data,

@@ -1,15 +1,13 @@
 import { Injectable } from '@nestjs/common';
-// import { WorkerController } from '../controllers/worker.controller';
 import { WorkerRepository } from './worker.repository';
 import { WorkerDto } from './dto/worker.dto';
-import { log } from 'console';
 
 @Injectable()
 export class WorkerService {
     constructor(private repo: WorkerRepository){}
 
     async getWorkers(){
-        const worker = await  this.repo.findMany();
+        const worker = await this.repo.findMany();
         return {
             success: true,
             message: 'Workers get successfully',
