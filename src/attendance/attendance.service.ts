@@ -2,27 +2,34 @@ import { Injectable } from '@nestjs/common';
 import { AttendanceRepository } from './attendance.repository';
 import { AttendanceDto } from './dto/attendance.dto';
 import { log } from 'console';
-import { connect } from 'http2';
 
 @Injectable()
 export class AttendanceService {
-    constructor(private repo: AttendanceRepository){}
+    constructor(private attendanceRepo: AttendanceRepository){}
         
     async getAttendances(){
 
-        const attendances = await this.repo.findMany();
-        return {
-            success: true,
-            status: 200,
-            message: "All Worker Attendances",
-            data: attendances,
-        }
+        return this.attendanceRepo.findMany();
             
     }
 
     async createAttendance(dto: AttendanceDto){
+        console.log(dto);
         
-        const attendance = await this.repo.create({
+        
+        return this.attendanceRepo.create({
+            date: new Date(dto.date),
+            check_in: new Date(new Date(`${dto.date}T${dto.check_in}`).toISOString()),
+            check_out: dto.check_out ? new Date(new Date(`${dto.date}T${dto.check_out}`).toISOString()) : null,
+            total_hours: dto.total_hours,
+            overtime_hours: dto.overtime_hours,
+            attendence_status: dto.attendence_status,
+            worker: { connect: { id: dto.worker_id}}
+        });
+    }
+
+    async updateAttendance(attendanceId: number, dto: AttendanceDto){
+        return this.attendanceRepo.update(attendanceId, {
             date: new Date(dto.date),
             check_in: new Date(`1970-01-01T${dto.check_in}:00Z`),
             check_out: dto.check_out
@@ -31,46 +38,11 @@ export class AttendanceService {
             overtime_hours: dto.overtime_hours,
             attendence_status: dto.attendence_status,
             worker: { connect: { id: dto.worker_id}}
-        });
-            
-
-            return {
-                success: true,
-                status: 200,
-                message: 'Attendance created successfully',
-                data: attendance
-            }
-        }
-
-    async updateAttendance(attendanceId: number, dto: AttendanceDto){
-        const attendance = await this.repo.update(attendanceId, {
-             date: new Date(dto.date),
-            check_in: new Date(`1970-01-01T${dto.check_in}:00Z`),
-            check_out: dto.check_out
-            ? new Date(`1970-01-01T${dto.check_out}:00Z`): null,
-            total_hours: dto.total_hours,
-            overtime_hours: dto.overtime_hours,
-            attendence_status: dto.attendence_status,
-            worker: { connect: { id: dto.worker_id}}
         })
-
-        return {
-                success: true,
-                status: 200,
-                message: 'Attendance updated successfully',
-                data: attendance
-            }
-       
     }
 
     async deleteAttendance(attendanceId: number){
-        const attendance = await this.repo.delete(attendanceId);
-            return {
-                success: true,
-                status: 200,
-                message: 'Attendance deleted successfully',
-                data: attendance
-            }
+        return this.attendanceRepo.delete(attendanceId);
     }
 
 }

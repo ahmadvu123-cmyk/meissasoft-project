@@ -1,6 +1,6 @@
 import { APP_FILTER } from "@nestjs/core";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDateString, IsEnum, IsMilitaryTime, IsInt, Min, Max, IsOptional, IsIn } from "class-validator";
+import { IsDateString, IsEnum, IsMilitaryTime, IsInt, Min, Max, IsOptional, IsIn, IsNumber } from "class-validator";
 import { AttendanceStatus } from "generated/prisma/enums";
 
 export class AttendanceDto {
@@ -24,12 +24,12 @@ export class AttendanceDto {
 
     @ApiProperty({example: '2'})
     @IsOptional()
-    @IsInt()
+    @IsNumber()
     total_hours: number
 
     @ApiProperty({example: '1'})
     @IsOptional()
-    @IsInt()
+    @IsNumber()
     overtime_hours: number
 
     @ApiProperty({example: 'PRESENT'})

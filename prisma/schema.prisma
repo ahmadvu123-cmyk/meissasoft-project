@@ -65,11 +65,11 @@ model Worker {
 model Attendance {
   id                 Int @id @default(autoincrement())
   worker_id          Int
-  date               DateTime @db.Date
-  check_in           DateTime @db.Time(0)
-  check_out          DateTime? @db.Time(0)
-  total_hours        Int?
-  overtime_hours     Int?
+  date               DateTime @db.Timestamp(3)
+  check_in           DateTime @db.Timestamp(3)
+  check_out          DateTime? @db.Timestamp(3)
+  total_hours        Float?
+  overtime_hours     Float?
   attendence_status  AttendanceStatus @default(ABSENT)  // using enum
   worker             Worker   @relation(fields: [worker_id], references: [id])
   createdAt          DateTime @default(now())
@@ -83,10 +83,10 @@ model Payroll {
   month                 String
   year                  Int
   days_present          Int?
-  overtime_hours        Int?
-  overtime_pay          Int?
-  total_deductions      Int
-  net_salary            Int?
+  overtime_hours        Float?
+  overtime_pay          Float?
+  total_deductions      Float
+  net_salary            Float?
   currency              Currency  @default(PKR) // using enum
   payment_status        PaymentStatus @default(UNPAID)  // using enum
   worker                Worker   @relation(fields: [worker_id], references: [id])
@@ -97,7 +97,7 @@ model WageStructure {
   id              Int @id @default(autoincrement())
   worker_id       Int @unique  // One to One Relation field
   wage_type       WageType @default(MONTHLY)  
-  base_salary     Int
+  base_salary     Float
   payment_method  PaymentMethod @default(CHEQUE)  // using enum
   worker          Worker   @relation(fields: [worker_id], references: [id])
   createdAt       DateTime @default(now())
@@ -106,7 +106,7 @@ model WageStructure {
 model Deductions {
   id                  Int @id @default(autoincrement())
   payroll_deductions  PayrollDeductions[]  // One to Many Relation field
-  amount              Int
+  amount              Float
   deduction_type      DeductionType  @default(TAX)  // using enum
   createdAt           DateTime @default(now())
   updatedAt           DateTime? @updatedAt
@@ -123,8 +123,8 @@ model PayrollDeductions {
 model Payments {
   id               Int   @id @default(autoincrement())
   payroll_id       Int  @unique 
-  salary           Int
-  payment_date     DateTime @db.Date
+  salary           Float
+  payment_date     DateTime @db.Timestamp(3)
   payroll          Payroll  @relation(fields: [payroll_id], references: [id])
   createdAt        DateTime @default(now())
   updatedAt        DateTime? @updatedAt
