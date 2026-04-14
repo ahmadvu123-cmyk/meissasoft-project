@@ -9,13 +9,14 @@ export class WorkerRepository {
 
     async findMany(){
         return this.prisma.worker.findMany();
+        
     }
     async create(data: Prisma.WorkerCreateInput){
         return this.prisma.worker.create({
             data,
         });
     }
-    async update(id: number, data: Prisma.WorkerCreateInput){
+    async update(id: number, data: any){
         return this.prisma.worker.update({
             where: { id },
             data,
@@ -25,8 +26,7 @@ export class WorkerRepository {
     async delete(id: number){
         return this.prisma.worker.delete({
             where: { id },
-        }
-        )
+        })
     }
 
 }

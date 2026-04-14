@@ -1,6 +1,5 @@
-import { APP_FILTER } from "@nestjs/core";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDateString, IsEnum, IsMilitaryTime, IsInt, Min, Max, IsOptional, IsIn, IsNumber } from "class-validator";
+import { IsEnum, IsInt, IsISO8601 } from "class-validator";
 import { AttendanceStatus } from "generated/prisma/enums";
 
 export class AttendanceDto {
@@ -9,30 +8,15 @@ export class AttendanceDto {
     @IsInt()
     worker_id: number
 
-    @ApiProperty({example: '1990-01-30' })
-    @IsDateString()
+    @ApiProperty({example: '1990-01-30T00:00:00.000Z' })
+    @IsISO8601()
     date: string
 
-    @ApiProperty({example: '08:00'})
-    @IsMilitaryTime()
+    @ApiProperty({example: '1990-01-30T00:00:00.000Z'})
+    @IsISO8601()
     check_in: string
-
-    @ApiProperty({example: '06:00'})
-    @IsOptional()
-    @IsMilitaryTime()
-    check_out: string
-
-    @ApiProperty({example: '2'})
-    @IsOptional()
-    @IsNumber()
-    total_hours: number
-
-    @ApiProperty({example: '1'})
-    @IsOptional()
-    @IsNumber()
-    overtime_hours: number
 
     @ApiProperty({example: 'PRESENT'})
     @IsEnum(AttendanceStatus)
-    attendence_status: AttendanceStatus
+    attendance_status: AttendanceStatus
 }

@@ -22,7 +22,6 @@ enum Role {
 enum PaymentMethod {
   CASH
   BANK_TRANSFER
-  CHEQUE
 }
 enum DeductionType {
   LOAN
@@ -37,8 +36,6 @@ enum WageType {
 enum AttendanceStatus {
   PRESENT
   ABSENT
-  LATE
-  HALF_DAY
 }
 enum PaymentStatus {
   PAID
@@ -55,8 +52,8 @@ model Worker {
   payroll          Payroll[]  // One to Many Relation field
   wage_structure   WageStructure?  // One to One Relation field
   name             String
-  phone_num        String
-  cnic             String
+  phone_num        String @unique()
+  cnic             String @unique()
   is_permanent     Boolean @default(false)
   role             Role @default(WORKER)  // using enum
   createdAt        DateTime @default(now())
@@ -66,11 +63,11 @@ model Attendance {
   id                 Int @id @default(autoincrement())
   worker_id          Int
   date               DateTime @db.Timestamp(3)
-  check_in           DateTime @db.Timestamp(3)
+  check_in           DateTime? @db.Timestamp(3)
   check_out          DateTime? @db.Timestamp(3)
   total_hours        Float?
   overtime_hours     Float?
-  attendence_status  AttendanceStatus @default(ABSENT)  // using enum
+  attendance_status  AttendanceStatus @default(ABSENT)  // using enum
   worker             Worker   @relation(fields: [worker_id], references: [id])
   createdAt          DateTime @default(now())
   updatedAt          DateTime? @updatedAt
@@ -85,7 +82,7 @@ model Payroll {
   days_present          Int?
   overtime_hours        Float?
   overtime_pay          Float?
-  total_deductions      Float
+  total_deductions      Float?
   net_salary            Float?
   currency              Currency  @default(PKR) // using enum
   payment_status        PaymentStatus @default(UNPAID)  // using enum
@@ -98,7 +95,7 @@ model WageStructure {
   worker_id       Int @unique  // One to One Relation field
   wage_type       WageType @default(MONTHLY)  
   base_salary     Float
-  payment_method  PaymentMethod @default(CHEQUE)  // using enum
+  payment_method  PaymentMethod @default(CASH)  // using enum
   worker          Worker   @relation(fields: [worker_id], references: [id])
   createdAt       DateTime @default(now())
   updatedAt       DateTime? @updatedAt
