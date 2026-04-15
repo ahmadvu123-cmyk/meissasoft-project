@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsInt, IsOptional, IsNumber, IsISO8601 } from "class-validator";
 import { AttendanceStatus } from "generated/prisma/enums";
 export class UpdateAttendanceDto {
-     @ApiProperty({example: "1"})
+     @ApiProperty({example: 1})
         @IsInt()
         @IsOptional()
         worker_id: number
@@ -23,6 +23,7 @@ export class UpdateAttendanceDto {
         check_out: string
         
         @ApiProperty({example: 'PRESENT'})
+        @IsOptional()
         @IsEnum(AttendanceStatus)
         attendance_status: AttendanceStatus
 }

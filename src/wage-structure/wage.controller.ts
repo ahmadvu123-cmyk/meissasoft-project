@@ -1,6 +1,5 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseFilters, Res, HttpException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseFilters, HttpException, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import type { Response } from 'express';
 import { GlobalExceptionFilter } from 'src/common/filters/global-exception/global-exception.filter';
 import { WageService } from './wage.service';
 import { FindWageResponseDto } from './dto/find.wage.response.dto';
@@ -24,14 +23,14 @@ export class WageStructureController {
         type: FindWageResponseDto
     })
     @ApiOperation({ summary: 'Get all wage structures' })
-    async findWageStructures( @Res() res: Response){
+    async findWageStructures(){
 
         try {
             const wageStructures = await this.wageService.allWageStructures();
-            return res.json({
+            return {
                 success: true,
                 data: wageStructures
-            })
+            }
         } catch (error: any) {
             throw new HttpException(error.message || 'Fetch all wage structures failed', error.status || 500);
         }
@@ -44,14 +43,15 @@ export class WageStructureController {
             description: 'Create a wage structure',
             type: CreateWageResponseDto
         })
+    @HttpCode(HttpStatus.OK)
     @ApiOperation({summary: 'Create a wage structure'})
-    async createWageStructure(@Body() dto: CreateWageDto, @Res() res: Response){
+    async createWageStructure(@Body() dto: CreateWageDto){
         try {
             const newWageStructure = await this.wageService.createWageStructure(dto);
-            return res.json({
+            return {
                 success: true,
                 data: newWageStructure
-            })
+            }
             
         } catch (error: any) {
             
@@ -66,13 +66,13 @@ export class WageStructureController {
             type: CreateWageResponseDto
         })
     @ApiOperation({summary: 'Update a wage structure'})
-    async updateWageStructure(@Param('id') id: number, @Body() dto: UpdateWageDto, @Res() res: Response){
+    async updateWageStructure(@Param('id') id: number, @Body() dto: UpdateWageDto){
         try {
             const updateWageStructure = await this.wageService.updateWageStructure(Number(id), dto);
-            return res.json({
+            return {
                 success: true,
                 data: updateWageStructure
-            })
+            }
         } catch (error) {
             
         }        
@@ -84,18 +84,15 @@ export class WageStructureController {
             type: DeleteWageResponseDto
         })
     @ApiOperation({summary: 'Delete a wage structure'})
-        async deleteWageStructure(@Param('id') id: number, @Res() res: Response){
+        async deleteWageStructure(@Param('id') id: number){
             try {
                 await this.wageService.deleteWageStructure(Number(id));
-                return res.json({
+                return {
                     success: true,
                     message: 'Wage structure deleted'
-                })
+                }
             } catch (error: any) {
                
             }
         }
-
-
-
 }

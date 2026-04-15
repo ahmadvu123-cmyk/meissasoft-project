@@ -7,8 +7,18 @@ import { Prisma } from "@prisma/client";
 export class WorkerRepository {
     constructor(private prisma: PrismaService){}
 
-    async findMany(){
-        return this.prisma.worker.findMany();
+    async findWorker(workerId: number){
+        return this.prisma.worker.findUnique({
+            where: {id: workerId}
+        })
+    }
+
+    async findMany(skip: number, take: number){
+        return this.prisma.worker.findMany({
+            skip,
+            take,
+            orderBy: { id: 'asc'}
+        });
         
     }
     async create(data: Prisma.WorkerCreateInput){
@@ -16,7 +26,7 @@ export class WorkerRepository {
             data,
         });
     }
-    async update(id: number, data: any){
+    async update(id: number, data: Prisma.WorkerUpdateInput){
         return this.prisma.worker.update({
             where: { id },
             data,

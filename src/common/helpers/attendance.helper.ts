@@ -1,9 +1,9 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { AttendanceRepository } from 'src/attendance/attendance.repository';
 @Injectable()
 
 export class AttendanceHelper{
-    constructor(private prisma: PrismaService) {};
+    constructor(private attendanceRepo: AttendanceRepository) {};
     
     async checkAttendance(workerId, date){
         const start = new Date(date);
@@ -11,15 +11,7 @@ export class AttendanceHelper{
 
         const end = new Date(date);
         end.setUTCHours(23, 59, 59, 999);
-        const existingAttendance = await this.prisma.attendance.findFirst({
-                where: { 
-                    worker_id: workerId, 
-                    date: {
-                        gte: start,
-                        lte: end,
-                    }
-                }
-            })
+        const existingAttendance = await this.attendanceRepo.existingAttendance(workerId, start, end);
             if(existingAttendance) throw new ConflictException('Attendance already exists for this day');
     }
 

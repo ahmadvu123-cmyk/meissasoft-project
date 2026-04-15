@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Delete, Param, UseFilters, Res, HttpException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Delete, Param, UseFilters, Res, HttpException, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import type { Response } from 'express';
 import { WorkerService } from './worker.service';
 import { WorkerDto } from './dto/worker.dto';
@@ -9,8 +9,8 @@ import { DeleteWorkerResponseDto } from './dto/delete.worker.response.dto';
 import { UpdateWorkerDto } from './dto/update.worker.dto';
 import { UpdateWorkerResponseDto } from './dto/update.worker.response.dto';
 import { CreateWorkerResponseDto } from './dto/create.worker.response.dto';
-import { PrismaErrorHandling } from 'src/common/helpers/prisma.error.handling';
-import { Prisma } from '@prisma/client';
+import { GetWorkersDto } from './dto/get.workers.dto';
+import { AppExceptionHandler } from 'src/common/helpers/app.exception.hander';
 
 
 @ApiTags('Worker')
@@ -28,17 +28,16 @@ export class WorkerController {
         type: WorkerResponseDto
     })
     @ApiOperation({summary: 'Get all Workers'})
-    // @HttpCode(HttpStatus.CREATED)
-    async findWorkers(@Res() res: Response){
+    async findWorkers( @Query() query: GetWorkersDto){
+        const { page = 1, limit = 10 } = query;
         try {
-        const workers = await this.workerService.getWorkers();
-        return res.json({
+        const workers = await this.workerService.getWorkers(page, limit);
+        return {
             success: true,
             data: workers
-        })
+        }
         } catch (error: any) {
-            if(error instanceof Prisma.PrismaClientKnownRequestError) throw PrismaErrorHandling(error); 
-            throw new HttpException(error.message || 'Fetch all workers failed', error.status || 500); 
+            throw new AppExceptionHandler(error);
         }
     }
 
@@ -48,19 +47,17 @@ export class WorkerController {
         type: CreateWorkerResponseDto
     })
     @ApiOperation({summary: 'Create a Worker'})
-    // @HttpCode(HttpStatus.OK)
-    async createNewWorker(@Body() dto: WorkerDto, @Res() res: Response){
+    @HttpCode(HttpStatus.OK)
+    async createNewWorker(@Body() dto: WorkerDto){
         try {
             const newWorker = await this.workerService.createWorker(dto);
-            return res.json({
+            return {
                 success: true,
                 data: newWorker
-            })  
+            }  
         } catch (error: any) {
-            if(error instanceof Prisma.PrismaClientKnownRequestError){
-                throw PrismaErrorHandling(error);
-            }
-            throw new HttpException(error.message || 'Worker creation failed', error.status || 500);
+            console.log(error);
+            throw new AppExceptionHandler(error);
         }
 
     }
@@ -71,19 +68,16 @@ export class WorkerController {
         type: UpdateWorkerResponseDto
     })
     @ApiOperation({summary: 'Update a Worker'})
-    // @HttpCode(HttpStatus.OK)
-    async updateWorker(@Param('id') id: number , @Body() dto: UpdateWorkerDto, @Res() res: Response){
+    async updateWorker(@Param('id') id: number , @Body() dto: UpdateWorkerDto){
         try {
             const updateWorker = await this.workerService.updateWorker(Number(id), dto);
-            return res.json({
+            return {
                 success: true,
                 data: updateWorker
-            })
-        } catch (error: any) {
-            if(error instanceof Prisma.PrismaClientKnownRequestError){
-                throw PrismaErrorHandling(error);
             }
-            throw new HttpException(error.message || 'Worker updation failed', error.status || 500);
+        } catch (error: any) {
+            console.log(error);
+            throw new AppExceptionHandler(error);
         }
 
     }
@@ -94,18 +88,15 @@ export class WorkerController {
         type: DeleteWorkerResponseDto
     })
     @ApiOperation({summary: 'Delete a Worker'})
-    async deleteWorker(@Param('id') id: number, @Res() res: Response){
+    async deleteWorker(@Param('id') id: number){
         try {
             await this.workerService.deleteWorker(Number(id));
-            return res.json({
+            return {
                 success: true,
                 message: 'Worker deleted'
-            })
-        } catch (error: any) {
-            if(error instanceof Prisma.PrismaClientKnownRequestError){
-                throw PrismaErrorHandling(error);
             }
-            throw new HttpException(error.message || 'Worker deletion failed', error.status || 500);
+        } catch (error: any) {
+            throw new AppExceptionHandler(error);
         }
     }
     

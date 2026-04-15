@@ -1,5 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Patch, UseFilters, Res, HttpCode, HttpStatus, HttpException } from '@nestjs/common';
-import type { Response } from 'express';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseFilters, HttpCode, HttpStatus, HttpException, Query } from '@nestjs/common';
 import { AttendanceService } from './attendance.service';
 import { AttendanceDto } from './dto/attendance.dto';
 import { ApiTags, ApiOperation, ApiOkResponse } from '@nestjs/swagger';
@@ -10,7 +9,8 @@ import { UpdateAttendanceDto } from './dto/update.attendance.dto';
 import { UpdateAttendanceResponseDto } from './dto/update.attendance.response.dto';
 import { CreateAttendanceResponseDto } from './dto/create.attendance.response.dto';
 import { Prisma } from '@prisma/client';
-import { PrismaErrorHandling } from 'src/common/helpers/prisma.error.handling';
+import { GetAttendanceDto } from './dto/get.attendance.dto';
+import { AppExceptionHandler } from 'src/common/helpers/app.exception.hander';
 
 
 @ApiTags('Attendance')
@@ -27,19 +27,15 @@ export class AttendanceController {
         type: AttendanceResponseDto
     })
     @ApiOperation({summary: 'Get all Attendances'})
-    @HttpCode(HttpStatus.OK)
-    async findAttendances(@Res() res: Response){
+    async findAttendances(@Query() query: GetAttendanceDto){
        try {
-            const attendances = await this.attendanceService.getAllAttendances();
-            return res.json({
+            const attendances = await this.attendanceService.getAllAttendances(query);
+            return {
                 success: true,
                 data: attendances
-            })
-       } catch (error: any) {
-            if(error instanceof Prisma.PrismaClientKnownRequestError){
-                throw PrismaErrorHandling(error);
             }
-            throw new HttpException(error.message || 'Fetch all attendances failed', error.status || 500);
+       } catch (error: any) {
+          throw new AppExceptionHandler(error);
         
        }
     }
@@ -51,18 +47,16 @@ export class AttendanceController {
     })
     @ApiOperation({summary: 'Create an Attendance'})
     @HttpCode(HttpStatus.OK)
-    async createNewAttendance(@Body() dto: AttendanceDto, @Res() res: Response){
+    async createNewAttendance(@Body() dto: AttendanceDto){
         try {
             const newAttendance = await this.attendanceService.createAttendance(dto);
-            return res.json({
+            return {
                 success: true,
                 data: newAttendance
-            })
-        } catch (error: any) {
-            if(error instanceof Prisma.PrismaClientKnownRequestError){
-                throw PrismaErrorHandling(error);
             }
-            throw new HttpException(error.message || 'Attendance creation failed', error.status || 500);
+        } catch (error: any) {
+                      throw new AppExceptionHandler(error);
+
         }
     }
 
@@ -74,19 +68,17 @@ export class AttendanceController {
     })
     @ApiOperation({summary: 'Update an Attendance'})
     @HttpCode(HttpStatus.OK)
-    async updateAttendance(@Param('id') id: number, @Body() dto: UpdateAttendanceDto, @Res() res: Response){
+    async updateAttendance(@Param('id') id: number, @Body() dto: UpdateAttendanceDto){
         
         try {
             const updateAttendance = await this.attendanceService.updateAttendance(Number(id), dto);
-            return res.json({
+            return {
                 success: true,
                 data: updateAttendance
-            })
-        } catch (error: any) {
-            if(error instanceof Prisma.PrismaClientKnownRequestError){
-                throw PrismaErrorHandling(error);
             }
-            throw new HttpException(error.message || 'Attendance updation failed', error.status || 500);
+        } catch (error: any) {
+                      throw new AppExceptionHandler(error);
+
 
         }
     }
@@ -98,18 +90,16 @@ export class AttendanceController {
     })
     @ApiOperation({summary: 'Delete an Attendance'})
     @HttpCode(HttpStatus.OK)
-    async deleteAttendance(@Param('id') id: number, @Res() res: Response){
+    async deleteAttendance(@Param('id') id: number){
         try {
             const deleteAttendance = await this.attendanceService.deleteAttendance(Number(id));
-            return res.json({
+            return {
                 success: true,
                 message: 'Attendance deleted'
-            }) 
-        } catch (error: any) {
-            if(error instanceof Prisma.PrismaClientKnownRequestError){
-                throw PrismaErrorHandling(error);
             }
-            throw new HttpException(error.message || 'Attendance deletion failed', error.status || 500);
+        } catch (error: any) {
+                      throw new AppExceptionHandler(error);
+
         }
         }
 }

@@ -1,18 +1,14 @@
-import { BadRequestException, HttpException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { WorkerRepository } from './worker.repository';
 import { WorkerDto } from './dto/worker.dto';
 import { UpdateWorkerDto } from './dto/update.worker.dto';
-import { empty } from '@prisma/client/runtime/library';
-import { isEmpty } from 'class-validator';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class WorkerService {
-    constructor(private workerRepo: WorkerRepository, private prisma: PrismaService){}
+    constructor(private workerRepo: WorkerRepository){}
 
-    async getWorkers(){
-        return this.workerRepo.findMany(); 
+    async getWorkers(page, limit){
+        return this.workerRepo.findMany((page - 1) * limit, limit); 
     }
 
     async createWorker(dto: WorkerDto) {
@@ -20,9 +16,7 @@ export class WorkerService {
     }
 
     async updateWorker(workerId: number, dto: UpdateWorkerDto){
-        const worker = await this.prisma.worker.findUnique({
-            where: { id: workerId }
-        })
+        const worker = await this.workerRepo.findWorker(workerId);
 
         if(!worker) throw new NotFoundException(`Worker with id ${workerId} does not exist. Please try with correct worker id`);
         
@@ -30,9 +24,7 @@ export class WorkerService {
     }
 
     async deleteWorker(workerId: number){
-        const getWorker = await this.prisma.worker.findUnique({
-            where: { id: workerId }
-        })
+        const getWorker = await this.workerRepo.findWorker(workerId);
 
         if(!getWorker) throw new NotFoundException(`Worker with id ${workerId} does not exist. Please try with correct worker id`);
         

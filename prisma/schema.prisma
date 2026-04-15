@@ -46,6 +46,7 @@ enum Currency {
   USD
 }
 
+
 model Worker {
   id               Int @id @default(autoincrement())
   attendance       Attendance[] // One to Many Relation field
