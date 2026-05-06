@@ -70,6 +70,13 @@ export class AppExceptionHandler extends HttpException {
           super(`${field || "Field"} already exists`, HttpStatus.CONFLICT);
           return;
 
+          case "P2014":
+          const relation = error?.meta?.relation_name;
+          super(
+          `Invalid operation on relation ${relation || "relation"}. This record is already linked or required relation would be violated`,
+          HttpStatus.CONFLICT);
+          return;
+
         default:
           super("Database error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
           return;

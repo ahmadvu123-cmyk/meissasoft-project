@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Payroll" ALTER COLUMN "year" SET DATA TYPE TEXT;

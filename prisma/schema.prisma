@@ -5,12 +5,14 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client-js" 
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  extensions = [vector]
 }
 
 // Database Schema Below
@@ -24,7 +26,6 @@ enum PaymentMethod {
   BANK_TRANSFER
 }
 enum DeductionType {
-  LOAN
   TAX
   FINE
 }
@@ -46,14 +47,32 @@ enum Currency {
   USD
 }
 
+// Tables with Vector Colomns below here
 
+model AttendanceEmbedding {
+  id              Int     @id @default(autoincrement())
+  summary         String
+  embedding       Unsupported("vector(3072)")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime?
+}
+
+model PayrollEmbedding {
+  id                Int     @id @default(autoincrement())
+  summary           String
+  embedding         Unsupported("vector(3072)")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime?
+}
+
+// Tables with no Vector Colomns
 model Worker {
   id               Int @id @default(autoincrement())
   attendance       Attendance[] // One to Many Relation field
   payroll          Payroll[]  // One to Many Relation field
   wage_structure   WageStructure?  // One to One Relation field
   name             String
-  phone_num        String @unique()
+  phone_num        String? @unique()
   cnic             String @unique()
   is_permanent     Boolean @default(false)
   role             Role @default(WORKER)  // using enum
@@ -71,15 +90,17 @@ model Attendance {
   attendance_status  AttendanceStatus @default(ABSENT)  // using enum
   worker             Worker   @relation(fields: [worker_id], references: [id])
   createdAt          DateTime @default(now())
-  updatedAt          DateTime? @updatedAt
+  updatedAt          DateTime?
 }
 model Payroll {
   id                    Int @id @default(autoincrement())
-  payroll_deductions    PayrollDeductions[]
   worker_id             Int  // One to Many Relation field
   payments              Payments?  //One to One Relation field
+  base_salary           Float
   month                 String
-  year                  Int
+  year                  String
+  total_working_days    Int
+  absent_days           Int?
   days_present          Int?
   overtime_hours        Float?
   overtime_pay          Float?
@@ -90,6 +111,7 @@ model Payroll {
   worker                Worker   @relation(fields: [worker_id], references: [id])
   createdAt             DateTime @default(now())
   updatedAt             DateTime? @updatedAt
+  @@unique([worker_id, month, year])
 }
 model WageStructure {
   id              Int @id @default(autoincrement())
@@ -103,21 +125,12 @@ model WageStructure {
 }
 model Deductions {
   id                  Int @id @default(autoincrement())
-  payroll_deductions  PayrollDeductions[]  // One to Many Relation field
-  amount              Float
+  tax_percentage      Float @default(15)
   deduction_type      DeductionType  @default(TAX)  // using enum
   createdAt           DateTime @default(now())
   updatedAt           DateTime? @updatedAt
 }
-model PayrollDeductions {
-  id                   Int @id @default(autoincrement())
-  deduction_id         Int
-  payroll_id           Int
-  deductions           Deductions  @relation(fields: [deduction_id], references: [id])
-  payroll              Payroll     @relation(fields: [payroll_id], references: [id])
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime? @updatedAt
-}
+
 model Payments {
   id               Int   @id @default(autoincrement())
   payroll_id       Int  @unique 
