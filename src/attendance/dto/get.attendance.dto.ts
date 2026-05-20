@@ -1,8 +1,9 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Transform, Type } from "class-transformer";
-import { IsISO8601, IsNumber, IsOptional, Min } from "class-validator";
+import { IsISO8601, IsNumber, IsOptional, Min, IsString } from "class-validator";
 export class GetAttendanceDto {
-       @ApiProperty({ example: 1})
+       @ApiProperty({ example: 1, required: false})
+        @IsOptional()
         @IsNumber()
         @Type(() => Number)
         worker_id: number
@@ -31,4 +32,10 @@ export class GetAttendanceDto {
         @Type(() => Number)
         @IsNumber()
         limit?: number
+
+        @ApiPropertyOptional({ example: "Fahad Rajpoot"})
+        @IsOptional()
+        @Type(() => String)
+        @IsString()
+        search?: string
 }

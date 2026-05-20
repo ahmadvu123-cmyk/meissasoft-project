@@ -11,6 +11,7 @@ import { WageRespository } from 'src/wage-structure/wage.respository';
 import { DeductionRepository } from 'src/deductions/deduction.repository';
 import { calculateNetSalary } from 'src/common/helpers/calculate.net.salary';
 import { PaymentRepository } from 'src/payments/payment.repository';
+import { Prisma } from 'generated/prisma/browser';
 
 
 
@@ -23,16 +24,33 @@ export class PayrollService {
             ) {}
 
     async allPayrolls(query: FindPayrollDto) {
-        const { page = 1, limit = 10 } = query;
-        return this.payrollRepo.findPayrolls((page - 1) * limit, limit);
-
+        const { page = 1, limit = 10, search } = query;
+        const whereCondition = search
+        ? {
+              worker: {
+                  name: {
+                      contains: search,
+                      mode: 'insensitive'
+                  }
+              }
+          }
+        : {};
+        const payrolls = await this.payrollRepo.findPayrolls((page - 1) * limit, limit, whereCondition);
+        const totalPayrolls = await this.payrollRepo.countTotalPayrolls(whereCondition);
+        console.log('total Workers:', totalPayrolls);   
+        const totalPages = Math.ceil(totalPayrolls / limit);
+        console.log('Total Pages:', totalPages, 'Type of total pages:', typeof(totalPages));
+        return {
+            payrolls,
+            totalPages
+        }
     }
 
     async createPayroll(dto: CreatePayrollDto) {
         const { worker_id, ...rest } = dto;
+        // if(error.code == "P2002") throw new ConflictException(`Payroll already exists against ${worker_id} worker id`)
         if(new Date(dto.month).getTime() !== new Date(dto.year).getTime()){
             throw new BadRequestException('Month and year should be same');
-
         }
         const getWorkerById = await this.workerRepo.findWorker(worker_id)
         if (!getWorkerById) throw new NotFoundException(`Payroll not created. Worker id ${worker_id} does not exist`);

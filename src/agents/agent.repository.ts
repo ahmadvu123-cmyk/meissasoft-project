@@ -15,7 +15,7 @@ export class AgentRepository {
             embedding <-> ${queryVector}::vector AS distance
             FROM "AttendanceEmbedding"
             ORDER BY distance ASC
-            LIMIT 10;
+            
             `;
     }
     async semancticSearchPayrolls(queryVector: number[]){
@@ -26,7 +26,7 @@ export class AgentRepository {
             embedding <-> ${queryVector}::vector AS distance
             FROM "PayrollEmbedding"
             ORDER BY distance ASC
-            LIMIT 10;
+            
             `;
     }
 
@@ -47,6 +47,6 @@ export class AgentRepository {
             embedding <-> ${queryVector}::vector AS distance
             FROM "PayrollEmbedding")AS combined
             ORDER BY distance ASC
-            LIMIT 10`;
+            `;
     }
 }

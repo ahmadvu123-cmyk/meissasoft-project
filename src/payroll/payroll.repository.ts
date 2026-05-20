@@ -24,6 +24,12 @@ export class PayrollRepository {
     //     });
     // }
 
+    async countTotalPayrolls(condition: any){
+        return this.prisma.payroll.count({
+            where: condition
+        });
+    }
+
     async findlatestPayroll(){
         return this.prisma.payroll.findFirst({
             orderBy: {
@@ -68,11 +74,19 @@ export class PayrollRepository {
         })
     }
 
-    async findPayrolls(skip: number, take: number) {
+    async findPayrolls(skip: number, take: number, condition: any) {
         return this.prisma.payroll.findMany({
             skip,
             take,
-            orderBy: { id: 'asc' }
+            orderBy: { id: 'asc' },
+            where: condition,
+            include: {
+                worker: {
+                    select: {
+                        name: true,
+                    }
+                }
+            },
         })
     }
     async createPayroll(data: Prisma.PayrollCreateInput) {

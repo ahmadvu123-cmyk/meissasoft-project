@@ -7,13 +7,11 @@ import { last } from "rxjs";
 export class AttendanceRepository {
     constructor(private prisma: PrismaService) { }
 
-    // async findLatestAttendance() {
-    //     return this.prisma.attendance.findFirst({
-    //         orderBy: {
-    //             id: 'desc'
-    //         }
-    //     });
-    // }
+    async countTotalAttendances(condition: any){
+        return this.prisma.attendance.count({
+            where: condition
+        })
+    }
 
     async findAllAttendacnes(date: Date) {
         
@@ -85,7 +83,15 @@ export class AttendanceRepository {
             where,
             skip,
             take,
-            orderBy: { id: 'asc' }
+            orderBy: { id: 'asc' },
+            include: {
+                worker: {
+                    select: {
+                        name: true,
+                    }
+                }
+            },
+
         });
     }
     async create(data: Prisma.AttendanceCreateInput) {

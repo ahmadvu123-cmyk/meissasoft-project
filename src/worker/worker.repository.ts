@@ -7,17 +7,24 @@ import { Prisma } from "@prisma/client";
 export class WorkerRepository {
     constructor(private prisma: PrismaService){}
 
+    async countTotalWorkers(condition: any){
+        return this.prisma.worker.count({
+            where: condition
+        });
+    }
+
     async findWorker(workerId: number){
         return this.prisma.worker.findUnique({
             where: {id: workerId}
         })
     }
 
-    async findMany(skip: number, take: number){
+    async findMany(skip: number, take: number, condition: any){
         return this.prisma.worker.findMany({
             skip,
             take,
-            orderBy: { id: 'asc'}
+            orderBy: { id: 'asc'},
+            where: condition
         });
         
     }

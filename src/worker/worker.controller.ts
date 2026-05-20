@@ -29,14 +29,15 @@ export class WorkerController {
     })
     @ApiOperation({summary: 'Get all Workers'})
     async findWorkers( @Query() query: GetWorkersDto){
-        const { page = 1, limit = 10 } = query;
+        const { page = 1, limit = 10, search } = query;
         try {
-        const workers = await this.workerService.getWorkers(page, limit);
+        const workers = await this.workerService.getWorkers(Number(page), Number(limit), search);
         return {
             success: true,
             data: workers
         }
         } catch (error: any) {
+            console.log(error);
             throw new AppExceptionHandler(error);
         }
     }
