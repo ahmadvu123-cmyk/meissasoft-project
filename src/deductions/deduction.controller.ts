@@ -11,23 +11,21 @@ import { UpdateDeductionsResponseDto } from './dto/update.deductions.response.dt
 import { UpdateDeductionsDto } from './dto/update.deductions.dto';
 import { DeleteDeductionsResponseDto } from './dto/delete.deductions.response.dto';
 
-
 @ApiTags('Deductions')
 @UseFilters(GlobalExceptionFilter)  // Global Exception Filter applies on all functions
 @Controller('deduction')
 export class DeductionController {
-    constructor(private deductionService: DeductionService){}
+    constructor(private deductionService: DeductionService) {}
 
     // Global Validation Pipes Applies on all routes
-    
+
     @Get()
     @ApiOkResponse({
         description: 'Get all deductions',
         type: FindDeductionsResponseDto
     })
     @ApiOperation({ summary: 'Get all deductions' })
-    async findWageStructures(@Query() query: FindDeductionsDto){
-        
+    async findWageStructures(@Query() query: FindDeductionsDto) {
         try {
             const deductions = await this.deductionService.allDeductions(query);
             return {
@@ -37,8 +35,6 @@ export class DeductionController {
         } catch (error: any) {
             throw new AppExceptionHandler(error);
         }
-        
-        
     }
 
     @Post()
@@ -48,55 +44,51 @@ export class DeductionController {
     })
     @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: 'Create a deduction' })
-    async createADeduction(@Body() dto: CreateDeductionsDto){
+    async createADeduction(@Body() dto: CreateDeductionsDto) {
         try {
             const newDeduction = await this.deductionService.createDeduction(dto);
             return {
                 success: true,
                 data: newDeduction
             }
-            
         } catch (error: any) {
-            console.log(error);
-            
             throw new AppExceptionHandler(error);
         }
-
     }
 
     @Put(':id')
-        @ApiOkResponse({
-            description: 'Update a deduction',
-            type: UpdateDeductionsResponseDto
-        })
-        @ApiOperation({ summary: 'Update a deduction' })
-        async updateWageStructure(@Param('id') id: number, @Body() dto: UpdateDeductionsDto) {
-            try {
-                const updateWageStructure = await this.deductionService.updateDeduction(id, dto);
-                return {
-                    success: true,
-                    data: updateWageStructure
-                }
-            } catch (error) {
-                throw new AppExceptionHandler(error);
+    @ApiOkResponse({
+        description: 'Update a deduction',
+        type: UpdateDeductionsResponseDto
+    })
+    @ApiOperation({ summary: 'Update a deduction' })
+    async updateWageStructure(@Param('id') id: number, @Body() dto: UpdateDeductionsDto) {
+        try {
+            const updateWageStructure = await this.deductionService.updateDeduction(id, dto);
+            return {
+                success: true,
+                data: updateWageStructure
             }
+        } catch (error) {
+            throw new AppExceptionHandler(error);
         }
+    }
 
-        @Delete(':id')
-            @ApiOkResponse({
-                description: 'Delete a wage structure',
-                type: DeleteDeductionsResponseDto
-            })
-            @ApiOperation({ summary: 'Delete a wage structure' })
-            async deleteWageStructure(@Param('id') id: number) {
-                try {
-                    await this.deductionService.deleteDeduction(Number(id));
-                    return {
-                        success: true,
-                        message: 'Deduction deleted'
-                    }
-                } catch (error: any) {
-                    throw new AppExceptionHandler(error);
-                }
+    @Delete(':id')
+    @ApiOkResponse({
+        description: 'Delete a wage structure',
+        type: DeleteDeductionsResponseDto
+    })
+    @ApiOperation({ summary: 'Delete a wage structure' })
+    async deleteWageStructure(@Param('id') id: number) {
+        try {
+            await this.deductionService.deleteDeduction(Number(id));
+            return {
+                success: true,
+                message: 'Deduction deleted'
             }
+        } catch (error: any) {
+            throw new AppExceptionHandler(error);
+        }
+    }
 }

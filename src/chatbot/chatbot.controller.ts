@@ -10,7 +10,7 @@ import { GlobalExceptionFilter } from 'src/common/filters/global-exception/globa
 @Controller('chatbot')
 @UseFilters(GlobalExceptionFilter) // Global Exception Filter applies on all functions
 export class ChatbotController {
-    constructor(private chatbotService: ChatbotService) { }
+    constructor(private chatbotService: ChatbotService) {}
 
     // Global Validation Pipes Applies on all routes
 
@@ -28,11 +28,9 @@ export class ChatbotController {
                 success: true,
                 content: promptResponse
             }
-
         } catch (error: any) {
             throw new AppExceptionHandler(error);
         }
-
     }
 
 }

@@ -3,8 +3,8 @@ import { PrismaClient } from '@prisma/client';
 
 
 @Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy{
-	async onModuleInit(){
+export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+	async onModuleInit() {
 		try {
 			await this.$connect();
 		} catch (error: any) {
@@ -12,12 +12,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
 		}
 	}
 
-	async onModuleDestroy(){
+	async onModuleDestroy() {
 		try {
 			await this.$disconnect();
 		} catch (error: any) {
 			console.error('Failed to disconnect DB', error?.message);
 		}
-		}
-
+	}
 }

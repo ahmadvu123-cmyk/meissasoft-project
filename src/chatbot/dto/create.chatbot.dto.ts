@@ -10,5 +10,4 @@ export class CreateChatbotDto {
     )
     @IsString()
     prompt: string
-
 }

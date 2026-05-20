@@ -7,14 +7,13 @@ import { last } from "rxjs";
 export class AttendanceRepository {
     constructor(private prisma: PrismaService) { }
 
-    async countTotalAttendances(condition: any){
+    async countTotalAttendances(condition: any) {
         return this.prisma.attendance.count({
             where: condition
         })
     }
 
     async findAllAttendacnes(date: Date) {
-        
         return this.prisma.attendance.findMany({
             where: {
                 updatedAt: {
@@ -24,7 +23,6 @@ export class AttendanceRepository {
                     gte: date
                 }
             },
-            
             include: {
                 worker: {
                     select: {
@@ -32,13 +30,10 @@ export class AttendanceRepository {
                     }
                 }
             },
-
-
         });
     }
 
     async findAttendancesOfMonth(workerId: number, start: Date, end: Date) {
-
         return this.prisma.attendance.findMany({
             where: {
                 worker_id: workerId,
@@ -51,14 +46,12 @@ export class AttendanceRepository {
                 }
             }
         })
-
     }
 
     async checkWorkerId(workerId: number) {
         return this.prisma.worker.findUnique({
             where: { id: workerId }
         })
-
     }
 
     async existingAttendance(workerId: number, start, end) {
@@ -69,7 +62,6 @@ export class AttendanceRepository {
                     gte: start,
                     lte: end,
                 }
-
             }
         })
     }
@@ -91,7 +83,6 @@ export class AttendanceRepository {
                     }
                 }
             },
-
         });
     }
     async create(data: Prisma.AttendanceCreateInput) {
@@ -104,7 +95,7 @@ export class AttendanceRepository {
             where: { id },
             data: {
                 ...data,
-            updatedAt: new Date(),
+                updatedAt: new Date(),
             }
         })
     }

@@ -14,7 +14,5 @@ export function keyWordExtraction(prompt: string): string[] {
         'please', 'tell', 'me', 'show',
         'just', 'know', 'mean', 'get', 'want', 'meaning'
     ])
-
     return prompt.replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(word => word.length > 2 || !isNaN(Number(word))).filter(word => word && !blackListWords.has(word));
-
 }

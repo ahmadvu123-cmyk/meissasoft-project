@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseFilters, HttpCode, HttpStatus, HttpException, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseFilters, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { AttendanceService } from './attendance.service';
 import { AttendanceDto } from './dto/attendance.dto';
 import { ApiTags, ApiOperation, ApiOkResponse } from '@nestjs/swagger';
@@ -8,7 +8,6 @@ import { DeleteAttendanceResponseDto } from './dto/delete.attendance.response.dt
 import { UpdateAttendanceDto } from './dto/update.attendance.dto';
 import { UpdateAttendanceResponseDto } from './dto/update.attendance.response.dto';
 import { CreateAttendanceResponseDto } from './dto/create.attendance.response.dto';
-import { Prisma } from '@prisma/client';
 import { GetAttendanceDto } from './dto/get.attendance.dto';
 import { AppExceptionHandler } from 'src/common/helpers/app.exception.hander';
 
@@ -17,7 +16,7 @@ import { AppExceptionHandler } from 'src/common/helpers/app.exception.hander';
 @UseFilters(GlobalExceptionFilter) // Global Exception Filter applies on all functions
 @Controller('attendance')
 export class AttendanceController {
-    constructor(private attendanceService: AttendanceService){}
+    constructor(private attendanceService: AttendanceService) { }
 
     // Global Validation Pipes Applies on all routes
 
@@ -26,18 +25,17 @@ export class AttendanceController {
         description: 'Get all attendances',
         type: AttendanceResponseDto
     })
-    @ApiOperation({summary: 'Get all Attendances'})
-    async findAttendances(@Query() query: GetAttendanceDto){
-       try {
+    @ApiOperation({ summary: 'Get all Attendances' })
+    async findAttendances(@Query() query: GetAttendanceDto) {
+        try {
             const attendances = await this.attendanceService.getAllAttendances(query);
             return {
                 success: true,
                 data: attendances
             }
-       } catch (error: any) {
-          throw new AppExceptionHandler(error);
-        
-       }
+        } catch (error: any) {
+            throw new AppExceptionHandler(error);
+        }
     }
 
     @Post()
@@ -45,9 +43,9 @@ export class AttendanceController {
         description: 'Create an attendances',
         type: CreateAttendanceResponseDto
     })
-    @ApiOperation({summary: 'Create an Attendance'})
+    @ApiOperation({ summary: 'Create an Attendance' })
     @HttpCode(HttpStatus.OK)
-    async createNewAttendance(@Body() dto: AttendanceDto){
+    async createNewAttendance(@Body() dto: AttendanceDto) {
         try {
             const newAttendance = await this.attendanceService.createAttendance(dto);
             return {
@@ -55,21 +53,18 @@ export class AttendanceController {
                 data: newAttendance
             }
         } catch (error: any) {
-                      throw new AppExceptionHandler(error);
-
+            throw new AppExceptionHandler(error);
         }
     }
 
-    
     @Put(':id')
     @ApiOkResponse({
         description: 'Update an attendances',
         type: UpdateAttendanceResponseDto
     })
-    @ApiOperation({summary: 'Update an Attendance'})
+    @ApiOperation({ summary: 'Update an Attendance' })
     @HttpCode(HttpStatus.OK)
-    async updateAttendance(@Param('id') id: number, @Body() dto: UpdateAttendanceDto){
-        
+    async updateAttendance(@Param('id') id: number, @Body() dto: UpdateAttendanceDto) {
         try {
             const updateAttendance = await this.attendanceService.updateAttendance(Number(id), dto);
             return {
@@ -77,9 +72,7 @@ export class AttendanceController {
                 data: updateAttendance
             }
         } catch (error: any) {
-                      throw new AppExceptionHandler(error);
-
-
+            throw new AppExceptionHandler(error);
         }
     }
 
@@ -88,9 +81,9 @@ export class AttendanceController {
         description: 'Delete an attendances',
         type: DeleteAttendanceResponseDto
     })
-    @ApiOperation({summary: 'Delete an Attendance'})
+    @ApiOperation({ summary: 'Delete an Attendance' })
     @HttpCode(HttpStatus.OK)
-    async deleteAttendance(@Param('id') id: number){
+    async deleteAttendance(@Param('id') id: number) {
         try {
             const deleteAttendance = await this.attendanceService.deleteAttendance(Number(id));
             return {
@@ -98,8 +91,7 @@ export class AttendanceController {
                 message: 'Attendance deleted'
             }
         } catch (error: any) {
-                      throw new AppExceptionHandler(error);
-
+            throw new AppExceptionHandler(error);
         }
-        }
+    }
 }

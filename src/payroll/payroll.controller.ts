@@ -5,7 +5,7 @@ import { AppExceptionHandler } from 'src/common/helpers/app.exception.hander';
 import { PayrollService } from './payroll.service';
 import { FindPayrollDto } from './dto/find.payroll.dto';
 import { CreatePayrollResponseDto } from './dto/create.payroll.response.dto';
-import { CreatePayrollDto } from './create.payroll.dto';
+import { CreatePayrollDto } from './dto/create.payroll.dto';
 import { UpdatePayrollResponseDto } from './dto/update.payroll.response.dto';
 import { UpdatePayrollDto } from './dto/update.payroll.dto';
 import { DeletePayrollResponseDto } from './dto/delete.payroll.response.dto';
@@ -55,7 +55,7 @@ export class PayrollController {
             }
 
         } catch (error: any) {
-            console.log(error);
+
 
             throw new AppExceptionHandler(error);
         }
@@ -77,7 +77,7 @@ export class PayrollController {
                 data: updatePayroll
             }
         } catch (error) {
-            console.log(error);
+            
             throw new AppExceptionHandler(error);
         }
     }

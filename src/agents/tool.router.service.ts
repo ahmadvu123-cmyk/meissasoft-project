@@ -1,4 +1,3 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { LlmService } from './llm.service';
 import { AgentService } from './agent.service';
@@ -42,8 +41,6 @@ export class ToolRouterService {
         7. prediction → user asks about future trends or forecasting based on HR data.
         Example: "Predict future salary or attendance trend"
         
-        
-        
         ---
         
         IMPORTANT RULES:
@@ -63,8 +60,6 @@ export class ToolRouterService {
         `;
         const res = this.llmService.invoke(prompt);
         const result = (await res).content.trim();
-        console.log(result);
-
         switch (result) {
             case 'overtime_pattern':
                 return this.agentService.getOverTime(query);
@@ -83,6 +78,5 @@ export class ToolRouterService {
             default:
                 return this.llmService.invoke(prompt);
         }
-
     }
 }

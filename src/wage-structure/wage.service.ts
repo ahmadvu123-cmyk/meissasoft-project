@@ -17,11 +17,9 @@ export class WageService {
 
         const checkWorkerId = await this.wageRepo.checkWorkerId(dto.worker_id);
         if (!checkWorkerId) throw new NotFoundException(`Wage Structure not created. No worker id ${dto.worker_id} found`);
-
         return this.wageRepo.create({
             worker: { connect: { id: worker_id } },
             ...rest
-
         });
     }
 
@@ -29,15 +27,12 @@ export class WageService {
         const { worker_id, ...rest } = dto;
         const checkWageStructure = await this.wageRepo.findWageStructure(wageId);
         if (!checkWageStructure) throw new NotFoundException(`Wage Structure not updated. No wage id ${wageId} found`);
-
         const checkWorkerId = await this.wageRepo.checkWorkerId(dto.worker_id);
         if (!checkWorkerId) throw new NotFoundException(`Wage Structure not updated. No worker id ${dto.worker_id} found`);
-
         return this.wageRepo.update(wageId, {
             worker: { connect: { id: worker_id } },
             ...rest
         });
-
     }
 
     async deleteWageStructure(wageId: number) {

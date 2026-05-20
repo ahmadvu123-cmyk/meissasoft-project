@@ -17,11 +17,8 @@ export class LlmService {
     async invoke(prompt: string) {
         const result = await this.model.generateContent(prompt);
         const response = result.response;
-
         return {
             content: response.text()
         }
     }
-
-
 }

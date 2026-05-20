@@ -7,7 +7,6 @@ export class CreateWageResponseDto {
         description: "This explain the success true or false"
     })
     success: Boolean
-
     @ApiProperty({
         type: 'object',
         properties: {
@@ -19,7 +18,6 @@ export class CreateWageResponseDto {
             updatedAt: { type: 'string', example: '2026-04-08T12:52:12.733Z', format: 'date-time', description: 'Date and time of wage structure updation' }
         },
     })
-
     data: {
         id: number,
         wage_type: WageType,
@@ -28,5 +26,4 @@ export class CreateWageResponseDto {
         createdAt: Date,
         updatedAt: Date
     }
-
 }

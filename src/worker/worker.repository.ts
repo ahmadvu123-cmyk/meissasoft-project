@@ -2,48 +2,44 @@ import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { Prisma } from "@prisma/client";
 
-
 @Injectable()
 export class WorkerRepository {
-    constructor(private prisma: PrismaService){}
+    constructor(private prisma: PrismaService) { }
 
-    async countTotalWorkers(condition: any){
+    async countTotalWorkers(condition: any) {
         return this.prisma.worker.count({
             where: condition
         });
     }
 
-    async findWorker(workerId: number){
+    async findWorker(workerId: number) {
         return this.prisma.worker.findUnique({
-            where: {id: workerId}
+            where: { id: workerId }
         })
     }
 
-    async findMany(skip: number, take: number, condition: any){
+    async findMany(skip: number, take: number, condition: any) {
         return this.prisma.worker.findMany({
             skip,
             take,
-            orderBy: { id: 'asc'},
+            orderBy: { id: 'asc' },
             where: condition
         });
-        
     }
-    async create(data: Prisma.WorkerCreateInput){
+    async create(data: Prisma.WorkerCreateInput) {
         return this.prisma.worker.create({
             data,
         });
     }
-    async update(id: number, data: Prisma.WorkerUpdateInput){
+    async update(id: number, data: Prisma.WorkerUpdateInput) {
         return this.prisma.worker.update({
             where: { id },
             data,
         })
-
     }
-    async delete(id: number){
+    async delete(id: number) {
         return this.prisma.worker.delete({
             where: { id },
         })
     }
-
 }

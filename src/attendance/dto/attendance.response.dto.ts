@@ -23,11 +23,8 @@ export class AttendanceResponseDto {
                 attendance_status: { type: 'string', enum: Object.values(AttendanceStatus), example: 'PRESENT/ABSENT/LATE/HALF DAY', description: 'Represents the status of attendance' },
                 createdAt: { type: 'string', example: '2026-04-08T12:52:12.733Z', format: 'date-time', description: 'Date and time of attendance creation' },
                 updatedAt: { type: 'string', example: '2026-04-08T12:52:12.733Z', format: 'date-time', description: 'Date and time of attendance updation' }
-
-
             },
         }
-
     })
     data:
         {
@@ -42,5 +39,4 @@ export class AttendanceResponseDto {
             createdAt: Date,
             updatedAt: Date
         }
-
 }

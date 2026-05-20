@@ -8,9 +8,9 @@ import { Role } from '@prisma/client';
 
 @Injectable()
 export class WorkerService {
-    constructor(private workerRepo: WorkerRepository){}
+    constructor(private workerRepo: WorkerRepository) { }
 
-    async getWorkers(page: number, limit: number, search: string){
+    async getWorkers(page: number, limit: number, search: string) {
         const isBoolean = search === 'true' || search === 'false';
         const whereCondition = search ? {
             OR: [
@@ -31,29 +31,24 @@ export class WorkerService {
                     },
                 },
                 ...(Object.values(Role).includes(search as Role)
-                ? [{ role: { equals: search as Role } }]
-                : []),
+                    ? [{ role: { equals: search as Role } }]
+                    : []),
                 {
-                is_permanent: {
+                    is_permanent: {
                         equals:
                             search === 'true'
-                            ? true
-                            : search === 'false'
-                            ? false
-                            : undefined,
-          },
-        },
+                                ? true
+                                : search === 'false'
+                                    ? false
+                                    : undefined,
+                    },
+                },
             ],
 
         } : undefined;
-
-        
         const workers = await this.workerRepo.findMany((page - 1) * limit, limit, whereCondition);
         const totalWorkers = await this.workerRepo.countTotalWorkers(whereCondition);
-        console.log('total Workers:', totalWorkers);   
         const totalPages = Math.ceil(totalWorkers / limit);
-        console.log('Total Pages:', totalPages, 'Type of total pages:', typeof(totalPages));
-
         return {
             workers,
             totalPages
@@ -64,19 +59,15 @@ export class WorkerService {
         return this.workerRepo.create(dto);
     }
 
-    async updateWorker(workerId: number, dto: UpdateWorkerDto){
+    async updateWorker(workerId: number, dto: UpdateWorkerDto) {
         const worker = await this.workerRepo.findWorker(workerId);
-
-        if(!worker) throw new NotFoundException(`Worker with id ${workerId} does not exist. Please try with correct worker id`);
-        
+        if (!worker) throw new NotFoundException(`Worker with id ${workerId} does not exist. Please try with correct worker id`);
         return this.workerRepo.update(workerId, dto);
     }
 
-    async deleteWorker(workerId: number){
+    async deleteWorker(workerId: number) {
         const getWorker = await this.workerRepo.findWorker(workerId);
-
-        if(!getWorker) throw new NotFoundException(`Worker with id ${workerId} does not exist. Please try with correct worker id`);
-        
+        if (!getWorker) throw new NotFoundException(`Worker with id ${workerId} does not exist. Please try with correct worker id`);
         return this.workerRepo.delete(workerId);
     }
 }

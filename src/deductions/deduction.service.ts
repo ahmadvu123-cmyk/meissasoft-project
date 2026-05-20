@@ -9,8 +9,6 @@ export class DeductionService {
     async allDeductions(query) {
         const { page = 1, limit = 10 } = query;
         return this.dedcutionRepo.findMany((page - 1) * limit, limit);
-
-
     }
 
     async createDeduction(dto: CreateDeductionsDto) {

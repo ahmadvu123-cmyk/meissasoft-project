@@ -11,36 +11,36 @@ import { DeletePaymentResponseDto } from './dto/delete.payment.response.dto';
 @UseFilters(GlobalExceptionFilter)  // Global Exception Filter applies on all functions
 @Controller('payment')
 export class PaymentController {
-    constructor (private paymentService: PaymentService){}
+    constructor(private paymentService: PaymentService) { }
 
     // Global Validation Pipes Applies on all routes
 
     @Get()
-        @ApiOkResponse({
-            description: 'Get all payments',
-            type: FindPaymentResponseDto
-        })
-        @ApiOperation({ summary: 'Get all payments' })
-        async findWageStructures(@Query() query: FindPaymentDto) {
-    
-            try {
-                const allPayments = await this.paymentService.allPayments(query);
-                return {
-                    success: true,
-                    data: allPayments
-                }
-            } catch (error: any) {
-                throw new AppExceptionHandler(error);
+    @ApiOkResponse({
+        description: 'Get all payments',
+        type: FindPaymentResponseDto
+    })
+    @ApiOperation({ summary: 'Get all payments' })
+    async findWageStructures(@Query() query: FindPaymentDto) {
+        try {
+            const allPayments = await this.paymentService.allPayments(query);
+            return {
+                success: true,
+                data: allPayments
             }
+        } catch (error: any) {
+            throw new AppExceptionHandler(error);
         }
-        @Delete(':id')
-        @ApiOkResponse({
-            description: 'Delete a payment',
-            type: DeletePaymentResponseDto
-        })
-        @ApiOperation({ summary: 'Delete a payment' })
-        async deletePayment(@Param('id') id: number){
-            try {
+    }
+    
+    @Delete(':id')
+    @ApiOkResponse({
+        description: 'Delete a payment',
+        type: DeletePaymentResponseDto
+    })
+    @ApiOperation({ summary: 'Delete a payment' })
+    async deletePayment(@Param('id') id: number) {
+        try {
             await this.paymentService.deletePayment(Number(id));
             return {
                 success: true,
@@ -49,5 +49,5 @@ export class PaymentController {
         } catch (error: any) {
             throw new AppExceptionHandler(error);
         }
-        }
+    }
 }

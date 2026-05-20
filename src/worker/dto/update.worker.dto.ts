@@ -2,7 +2,6 @@ import { IsString, IsBoolean, IsEnum, IsOptional } from "class-validator";
 import { Role } from "generated/prisma/enums";
 import { ApiProperty } from "@nestjs/swagger";
 
-
 export class UpdateWorkerDto {
         @ApiProperty({example: 'Admin'})
         @IsOptional()

@@ -27,70 +27,66 @@ export class AgentService {
     }
 
     async createContextSendToLLM(query: string, context: any) {
-        console.log(query, context);
         const promptTemplate = new PromptTemplate({
             template: `
-You are a helpful, friendly, and professional AI assistant.
+            You are a helpful, friendly, and professional AI assistant.
 
-Your goal is to provide clear, accurate, and well-structured responses like a professional MS Word document.
+            Your goal is to provide clear, accurate, and well-structured responses like a professional MS Word document.
 
----
+            ---
 
-# 🧠 CORE BEHAVIOR
+            # 🧠 CORE BEHAVIOR
 
-- Always respond to the user. Never return empty or blank responses.
-- Handle ALL types of input:
-  - Greetings (hi, hello, hey)
-  - General questions
-  - Context-based questions
-  - Casual conversation
-- Maintain a polite and helpful tone in all cases.
+            - Always respond to the user. Never return empty or blank responses.
+            - Handle ALL types of input:
+            - Greetings (hi, hello, hey)
+            - General questions
+            - Context-based questions
+            - Casual conversation
+            - Maintain a polite and helpful tone in all cases.
 
----
+            ---
 
-# 📄 RESPONSE FORMAT (STRICT - MS WORD STYLE)
+            # 📄 RESPONSE FORMAT (STRICT - MS WORD STYLE)
 
-You MUST always structure your response in the following format:
+            You MUST always structure your response in the following format:
 
+            Provide a short direct answer (1 lines).
 
-Provide a short direct answer (1 lines).
+            Explain the answer in a clear and simple paragraph.
 
+            Only give explanation when it is neccessory.
 
-Explain the answer in a clear and simple paragraph.
+            ---
 
+            # 📌 RULES
 
-Only give explanation when it is neccessory.
+            - Always follow the structure above
+            - Key points are just to structure the response.
+            - Never return plain text without formatting
+            - Always respond even if input is greeting or casual
+            - If user says hi/hello:
+            - Be friendly
+            - Still follow full structure but keep it short
+            - If answer is not in context, say:
+            "I don't know based on the provided information."
+            - Do not invent facts outside the context
+            - Keep language simple and professional
 
----
+            ---
 
-# 📌 RULES
+            # 📦 INPUTS
 
-- Always follow the structure above
-- Key points are just to structure the response.
-- Never return plain text without formatting
-- Always respond even if input is greeting or casual
-- If user says hi/hello:
-  - Be friendly
-  - Still follow full structure but keep it short
-- If answer is not in context, say:
-  "I don't know based on the provided information."
-- Do not invent facts outside the context
-- Keep language simple and professional
+            Context:
+            {context}
 
----
+            User Question:
+            {question}
 
-# 📦 INPUTS
+            ---
 
-Context:
-{context}
-
-User Question:
-{question}
-
----
-
-# 🎯 ANSWER
-`,
+            # 🎯 ANSWER
+            `,
             inputVariables: ["context", "question"],
         })
         const cleanContext = context
@@ -100,7 +96,6 @@ User Question:
             context: cleanContext,
             question: query
         })
-
         return await this.llmService.invoke(formattedPrompt);
     }
 
@@ -115,7 +110,6 @@ User Question:
         const embeddings = await this.model.embedContent(query);
         const semanticSearchResponse = await this.agentRepo.semanticSearchAttendances(embeddings.embedding.values)
         return await this.createContextSendToLLM(query, semanticSearchResponse);
-
     }
     async getLeaves(query: string) {
         const embeddings = await this.model.embedContent(query);
@@ -147,6 +141,4 @@ User Question:
         const semanticSearchResponse = await this.agentRepo.semanticSearchAttendancesAndPayrolls(embeddings.embedding.values)
         return await this.createContextSendToLLM(query, semanticSearchResponse);
     }
-
-
 }

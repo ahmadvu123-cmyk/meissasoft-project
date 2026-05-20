@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { FindPayrollDto } from './dto/find.payroll.dto';
 import { PayrollRepository } from './payroll.repository';
-import { CreatePayrollDto } from './create.payroll.dto';
+import { CreatePayrollDto } from './dto/create.payroll.dto';
 import { UpdatePayrollDto } from './dto/update.payroll.dto';
 import { WorkerRepository } from 'src/worker/worker.repository';
 import { checkPayrollInMonth } from 'src/common/helpers/check.payroll';
@@ -37,9 +37,9 @@ export class PayrollService {
         : {};
         const payrolls = await this.payrollRepo.findPayrolls((page - 1) * limit, limit, whereCondition);
         const totalPayrolls = await this.payrollRepo.countTotalPayrolls(whereCondition);
-        console.log('total Workers:', totalPayrolls);   
+           
         const totalPages = Math.ceil(totalPayrolls / limit);
-        console.log('Total Pages:', totalPages, 'Type of total pages:', typeof(totalPages));
+        
         return {
             payrolls,
             totalPages
@@ -57,7 +57,7 @@ export class PayrollService {
         const { start, end, month, year } = checkPayrollInMonth(dto.year);
         const getAttendancesOfMonth = await this.attendanceRepo.findAttendancesOfMonth(worker_id, start, end);
         if (getAttendancesOfMonth.length === 0) throw new NotFoundException(`No attendances found in ${month} month of ${year} year`);
-        console.log(getAttendancesOfMonth);
+        
         const days_present = getAttendancesOfMonth.length;
         const absent_days = dto.total_working_days - days_present;
         const overTimeHours = calculateOverTimeHours(getAttendancesOfMonth);

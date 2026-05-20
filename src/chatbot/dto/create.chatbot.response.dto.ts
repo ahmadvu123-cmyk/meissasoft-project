@@ -11,5 +11,4 @@ export class CreateChatbotResponseDto {
         description: 'Detemines the answer of user prompt'
     })
     message: string
-
 }

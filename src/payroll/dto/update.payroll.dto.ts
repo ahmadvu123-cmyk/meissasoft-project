@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsInt, IsISO8601, IsNumber, IsOptional } from "class-validator";
+import { IsEnum, IsInt, IsNumber, IsOptional } from "class-validator";
 import { Currency, PaymentStatus } from "generated/prisma/enums";
 
 export class UpdatePayrollDto {
@@ -17,17 +17,17 @@ export class UpdatePayrollDto {
     @IsNumber()
     total_working_days: number
 
-    @ApiProperty({ example: '10'})
+    @ApiProperty({ example: '10' })
     @IsOptional()
     @IsNumber()
     overtime_hours: number
 
-    @ApiProperty({ example: '15'})
+    @ApiProperty({ example: '15' })
     @IsOptional()
     @IsNumber()
     total_deduction: number
 
-    @ApiProperty({ example: '10'})
+    @ApiProperty({ example: '10' })
     @IsOptional()
     @IsNumber()
     days_present: number

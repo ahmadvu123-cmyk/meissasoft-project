@@ -27,7 +27,6 @@ export class WageStructureController {
     })
     @ApiOperation({ summary: 'Get all wage structures' })
     async findWageStructures(@Query() query: FindWageStructure) {
-
         try {
             const wageStructures = await this.wageService.allWageStructures(query);
             return {
@@ -37,8 +36,6 @@ export class WageStructureController {
         } catch (error: any) {
             throw new AppExceptionHandler(error);
         }
-
-
     }
 
     @Post()
@@ -55,14 +52,9 @@ export class WageStructureController {
                 success: true,
                 data: newWageStructure
             }
-
         } catch (error: any) {
-            console.log(error);
-
             throw new AppExceptionHandler(error);
         }
-
-
     }
 
     @Put(':id')

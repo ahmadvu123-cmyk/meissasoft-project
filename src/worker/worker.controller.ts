@@ -1,5 +1,4 @@
-import { Controller, Get, Post, Body, Put, Delete, Param, UseFilters, Res, HttpException, HttpCode, HttpStatus, Query } from '@nestjs/common';
-import type { Response } from 'express';
+import { Controller, Get, Post, Body, Put, Delete, Param, UseFilters, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { WorkerService } from './worker.service';
 import { WorkerDto } from './dto/worker.dto';
 import { ApiTags, ApiOperation, ApiOkResponse } from '@nestjs/swagger';
@@ -12,14 +11,13 @@ import { CreateWorkerResponseDto } from './dto/create.worker.response.dto';
 import { GetWorkersDto } from './dto/get.workers.dto';
 import { AppExceptionHandler } from 'src/common/helpers/app.exception.hander';
 
-
 @ApiTags('Worker')
 @UseFilters(GlobalExceptionFilter) // Global Exception Filter applies on all functions
 @Controller('worker')
 
 export class WorkerController {
-    constructor(private workerService: WorkerService){}
-
+    constructor(private workerService: WorkerService) {}
+    
     // Global Validation Pipes Applies on all routes
 
     @Get()
@@ -27,17 +25,17 @@ export class WorkerController {
         description: 'Get all workers',
         type: WorkerResponseDto
     })
-    @ApiOperation({summary: 'Get all Workers'})
-    async findWorkers( @Query() query: GetWorkersDto){
+    @ApiOperation({ summary: 'Get all Workers' })
+    async findWorkers(@Query() query: GetWorkersDto) {
         const { page = 1, limit = 10, search } = query;
         try {
-        const workers = await this.workerService.getWorkers(Number(page), Number(limit), search);
-        return {
-            success: true,
-            data: workers
-        }
+            const workers = await this.workerService.getWorkers(Number(page), Number(limit), search);
+            return {
+                success: true,
+                data: workers
+            }
         } catch (error: any) {
-            console.log(error);
+
             throw new AppExceptionHandler(error);
         }
     }
@@ -47,29 +45,28 @@ export class WorkerController {
         description: 'Create a worker',
         type: CreateWorkerResponseDto
     })
-    @ApiOperation({summary: 'Create a Worker'})
+    @ApiOperation({ summary: 'Create a Worker' })
     @HttpCode(HttpStatus.OK)
-    async createNewWorker(@Body() dto: WorkerDto){
+    async createNewWorker(@Body() dto: WorkerDto) {
         try {
             const newWorker = await this.workerService.createWorker(dto);
             return {
                 success: true,
                 data: newWorker
-            }  
+            }
         } catch (error: any) {
-            console.log(error);
+
             throw new AppExceptionHandler(error);
         }
-
     }
 
     @Put(':id')
-     @ApiOkResponse({
+    @ApiOkResponse({
         description: 'Update a worker',
         type: UpdateWorkerResponseDto
     })
-    @ApiOperation({summary: 'Update a Worker'})
-    async updateWorker(@Param('id') id: number , @Body() dto: UpdateWorkerDto){
+    @ApiOperation({ summary: 'Update a Worker' })
+    async updateWorker(@Param('id') id: number, @Body() dto: UpdateWorkerDto) {
         try {
             const updateWorker = await this.workerService.updateWorker(Number(id), dto);
             return {
@@ -77,19 +74,18 @@ export class WorkerController {
                 data: updateWorker
             }
         } catch (error: any) {
-            console.log(error);
+
             throw new AppExceptionHandler(error);
         }
-
     }
 
     @Delete(':id')
-     @ApiOkResponse({
+    @ApiOkResponse({
         description: 'Delete a worker',
         type: DeleteWorkerResponseDto
     })
-    @ApiOperation({summary: 'Delete a Worker'})
-    async deleteWorker(@Param('id') id: number){
+    @ApiOperation({ summary: 'Delete a Worker' })
+    async deleteWorker(@Param('id') id: number) {
         try {
             await this.workerService.deleteWorker(Number(id));
             return {
@@ -100,5 +96,5 @@ export class WorkerController {
             throw new AppExceptionHandler(error);
         }
     }
-    
+
 }

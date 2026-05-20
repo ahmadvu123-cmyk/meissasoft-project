@@ -4,10 +4,9 @@ import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class AgentRepository {
-    constructor(private prisma: PrismaService){}
+    constructor(private prisma: PrismaService) {}
 
-
-    async semanticSearchAttendances(queryVector: number[]){
+    async semanticSearchAttendances(queryVector: number[]) {
         return this.prisma.$queryRaw`
             SELECT
             id,
@@ -15,10 +14,10 @@ export class AgentRepository {
             embedding <-> ${queryVector}::vector AS distance
             FROM "AttendanceEmbedding"
             ORDER BY distance ASC
-            
             `;
     }
-    async semancticSearchPayrolls(queryVector: number[]){
+
+    async semancticSearchPayrolls(queryVector: number[]) {
         return this.prisma.$queryRaw`
             SELECT
             id,
@@ -26,11 +25,10 @@ export class AgentRepository {
             embedding <-> ${queryVector}::vector AS distance
             FROM "PayrollEmbedding"
             ORDER BY distance ASC
-            
             `;
     }
 
-    async semanticSearchAttendancesAndPayrolls(queryVector: number[]){
+    async semanticSearchAttendancesAndPayrolls(queryVector: number[]) {
         return this.prisma.$queryRaw`
         SELECT * FROM (
         SELECT

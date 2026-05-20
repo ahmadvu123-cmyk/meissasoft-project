@@ -2,20 +2,19 @@ import { Injectable } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { PrismaService } from "src/prisma/prisma.service";
 
-
 @Injectable()
 export class PaymentRepository {
-    constructor(private prisma: PrismaService){}
+    constructor(private prisma: PrismaService) { }
 
-    async findMany(skip: number, take: number){
+    async findMany(skip: number, take: number) {
         return this.prisma.payments.findMany({
             skip,
             take,
-            orderBy: { id: 'asc'}
+            orderBy: { id: 'asc' }
         });
     }
 
-    async createPayment(payrollId: number, salary: number, date: string){
+    async createPayment(payrollId: number, salary: number, date: string) {
         return this.prisma.payments.create({
             data: {
                 payroll_id: payrollId,
@@ -25,9 +24,9 @@ export class PaymentRepository {
         })
     }
 
-    async findPaymentByPayrollId(payrollId: number){
+    async findPaymentByPayrollId(payrollId: number) {
         return this.prisma.payments.findUnique({
-            where: {payroll_id: payrollId}
+            where: { payroll_id: payrollId }
         })
     }
 
@@ -39,19 +38,18 @@ export class PaymentRepository {
                 salary: salary,
                 payment_date: date
             }
-
         })
     }
 
-    async deletePayment(paymentId: number){
+    async deletePayment(paymentId: number) {
         return this.prisma.payments.delete({
-            where: {id: paymentId}
+            where: { id: paymentId }
         })
     }
 
-    async findAPayment(paymentId: number){
+    async findAPayment(paymentId: number) {
         return this.prisma.payments.findUnique({
-            where: {id: paymentId}
+            where: { id: paymentId }
         })
     }
 }

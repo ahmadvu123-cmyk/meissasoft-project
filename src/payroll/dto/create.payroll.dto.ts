@@ -7,10 +7,6 @@ export class CreatePayrollDto {
     @IsInt()
     worker_id: number
 
-    // @ApiProperty({ example: '30000' })
-    // @IsNumber()
-    // base_salary: number
-
     @ApiProperty({ example: '1990-01-30T00:00:00.000Z' })
     @IsISO8601()
     month: string
@@ -22,7 +18,6 @@ export class CreatePayrollDto {
     @ApiProperty({ example: '20' })
     @IsNumber()
     total_working_days: number
-
 
     @ApiProperty({ example: 'PKR' })
     @IsEnum(Currency)

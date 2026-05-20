@@ -1,7 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-
-
 export class DeleteWorkerResponseDto {
     @ApiProperty({
         example: 'true/false',

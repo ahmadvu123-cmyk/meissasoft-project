@@ -13,7 +13,7 @@ export class DeductionRepository {
         });
     }
 
-    async findLatestDeduction (){
+    async findLatestDeduction() {
         return this.prisma.deductions.findFirst();
     }
     async findMany(skip: number, take: number) {

@@ -7,10 +7,8 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
-import {Server, Socket} from "socket.io"
+import { Server, Socket } from "socket.io"
 import { ChatbotService } from './chatbot.service';
-import { log } from 'node:util';
-
 
 @WebSocketGateway({
   cors: {
@@ -18,7 +16,7 @@ import { log } from 'node:util';
   }
 })
 export class ChatbotGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  constructor(private chatbotService: ChatbotService){}
+  constructor(private chatbotService: ChatbotService) { }
 
   @WebSocketServer()
   server: Server;
@@ -28,7 +26,7 @@ export class ChatbotGateway implements OnGatewayConnection, OnGatewayDisconnect 
     client.emit('message', {
       user: 'ChatBot',
       text: 'Hi! How can i help you?'
-    }); 
+    });
   }
   handleDisconnect(client: Socket) {
     console.log(`Client Disconnected: ${client.id}`);
@@ -39,15 +37,15 @@ export class ChatbotGateway implements OnGatewayConnection, OnGatewayDisconnect 
     try {
       const response = await this.chatbotService.getUserPromptAndResponse(payload);
       client.emit('message', {
-      user: 'ChatBot',
-      text: response?.content
-    })
+        user: 'ChatBot',
+        text: response?.content
+      })
     } catch (error) {
       client.emit('message', {
         user: 'ChatBot',
         text: 'Sorry, I am not able to process your request. Please try again later.'
       })
-      
+
     }
   }
 }
