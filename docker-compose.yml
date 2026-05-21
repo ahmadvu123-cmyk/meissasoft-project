@@ -17,5 +17,21 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  backend:
+    build: .
+    container_name: Pay_Wage_DB
+    restart: always
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - postgres
+
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/Pay_Wage_DB
+
+    command: sh -c "npx prisma generate && npm run start:prod"
+
 volumes:
   postgres_data:
