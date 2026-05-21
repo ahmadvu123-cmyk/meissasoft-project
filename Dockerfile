@@ -10,11 +10,12 @@ COPY src ./src
 COPY tsconfig.json ./
 COPY nest-cli.json ./
 
-# 🔥 FIRST generate prisma
+
+RUN npm run build
+
 RUN npx prisma generate
 
-# THEN build
-RUN npm run build
+
 
 EXPOSE 3000
 
