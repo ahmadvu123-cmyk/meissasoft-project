@@ -3,16 +3,14 @@ FROM node:20
 WORKDIR /app
 
 COPY package*.json ./
-
 RUN npm install
 
 COPY . .
 
+# 👇 IMPORTANT: build-time dummy value
+ENV DATABASE_URL="postgresql://postgres:BeggulXgHmqelLUSTnnbBpQafrwbEBzj@postgres.railway.internal:5432/railway"
 
-# generate prisma client
 RUN npx prisma generate
-
-# build nest app
 RUN npm run build
 
 EXPOSE 3000
