@@ -9,11 +9,8 @@ RUN npm install
 
 COPY . .
 
-# 👇 IMPORTANT: run AFTER full copy
-RUN npx prisma generate --schema=./prisma/schema.prisma
-
 RUN npm run build
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main"]
+CMD ["sh", "-c", "npx prisma generate --schema=./prisma/schema.prisma && npx prisma migrate deploy && node dist/main"]
