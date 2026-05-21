@@ -3,7 +3,7 @@ version: '3.9'
 services:
   postgres:
     image: ankane/pgvector
-    container_name: Pay_Wage_DB2
+    container_name: Pay_Wage_DB
     restart: always
 
     ports:
