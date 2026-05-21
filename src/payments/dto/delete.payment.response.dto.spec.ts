@@ -1,4 +1,4 @@
-import { DeletePaymentResponseDto } from '../delete.payment.response.dto';
+import { DeletePaymentResponseDto } from './delete.payment.response.dto';
 
 describe('DeletePaymentResponseDto', () => {
   it('should be defined', () => {

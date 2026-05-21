@@ -1,4 +1,4 @@
-import { CreateChatbotDto } from '../create.chatbot.dto';
+import { CreateChatbotDto } from './create.chatbot.dto';
 
 describe('CreateChatbotDto', () => {
   it('should be defined', () => {

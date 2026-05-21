@@ -11,7 +11,7 @@ import { WageRespository } from 'src/wage-structure/wage.respository';
 import { DeductionRepository } from 'src/deductions/deduction.repository';
 import { calculateNetSalary } from 'src/common/helpers/calculate.net.salary';
 import { PaymentRepository } from 'src/payments/payment.repository';
-import { Prisma } from 'generated/prisma/browser';
+
 
 
 

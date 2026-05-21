@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { PaymentStatus, Currency } from "generated/prisma/enums";
+import { PaymentStatus, Currency } from "@prisma/client";
 
 export class CreatePayrollResponseDto {
     @ApiProperty({

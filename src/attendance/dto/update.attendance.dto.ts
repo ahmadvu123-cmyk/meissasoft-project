@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsInt, IsOptional, IsISO8601 } from "class-validator";
-import { AttendanceStatus } from "generated/prisma/enums";
+import { AttendanceStatus } from "@prisma/client";
 export class UpdateAttendanceDto {
         @ApiProperty({ example: 1 })
         @IsInt()

@@ -1,4 +1,4 @@
-import { FindWageResponseDto } from '../find.wage.response.dto';
+import { FindWageResponseDto } from './find.wage.response.dto';
 
 describe('FindWageResponseDto', () => {
   it('should be defined', () => {

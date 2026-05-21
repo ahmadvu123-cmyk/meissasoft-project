@@ -1,4 +1,4 @@
-import { CreateWorkerResponseDto } from '../create.worker.response.dto';
+import { CreateWorkerResponseDto } from './create.worker.response.dto';
 
 describe('CreateWorkerResponseDto', () => {
   it('should be defined', () => {

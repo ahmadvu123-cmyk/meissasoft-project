@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { DeductionType } from "generated/prisma/enums";
+import { DeductionType } from "@prisma/client";
 
 export class FindDeductionsResponseDto {
     @ApiProperty({

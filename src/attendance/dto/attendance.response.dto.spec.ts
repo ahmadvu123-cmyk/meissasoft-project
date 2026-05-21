@@ -1,4 +1,4 @@
-import { AttendanceResponseDto } from '../attendance.response.dto';
+import { AttendanceResponseDto } from './attendance.response.dto';
 
 describe('AttendanceResponseDto', () => {
   it('should be defined', () => {

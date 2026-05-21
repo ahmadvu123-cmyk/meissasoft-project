@@ -1,4 +1,4 @@
-import { DeleteAttendanceResponseDto } from '../delete.attendance.response.dto';
+import { DeleteAttendanceResponseDto } from './delete.attendance.response.dto';
 
 describe('DeleteAttendanceResponseDto', () => {
   it('should be defined', () => {

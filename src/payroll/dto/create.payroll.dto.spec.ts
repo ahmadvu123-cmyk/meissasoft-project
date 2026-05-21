@@ -1,4 +1,4 @@
-import { CreatePayrollDto } from '../../create.payroll.dto';
+import { CreatePayrollDto } from './create.payroll.dto';
 
 describe('CreatePayrollDto', () => {
   it('should be defined', () => {

@@ -1,5 +1,5 @@
 import { IsString, IsEnum, IsNumber } from "class-validator";
-import { DeductionType } from "generated/prisma/enums";
+import { DeductionType } from "@prisma/client";
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateDeductionsDto {

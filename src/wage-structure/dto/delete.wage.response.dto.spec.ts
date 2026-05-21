@@ -1,4 +1,4 @@
-import { DeleteWageResponseDto } from '../delete.wage.response.dto';
+import { DeleteWageResponseDto } from './delete.wage.response.dto';
 
 describe('DeleteWageResponseDto', () => {
   it('should be defined', () => {

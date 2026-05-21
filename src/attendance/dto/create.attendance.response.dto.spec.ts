@@ -1,4 +1,4 @@
-import { CreateAttendanceResponseDto } from '../create.attendance.response.dto';
+import { CreateAttendanceResponseDto } from './create.attendance.response.dto';
 
 describe('CreateAttendanceResponseDto', () => {
   it('should be defined', () => {

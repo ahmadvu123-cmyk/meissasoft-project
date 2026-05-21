@@ -1,5 +1,5 @@
 import { IsString, IsBoolean, IsEnum } from "class-validator";
-import { Role } from "generated/prisma/enums";
+import { Role } from "@prisma/client";
 import { ApiProperty } from '@nestjs/swagger';
 
 export class WorkerDto {

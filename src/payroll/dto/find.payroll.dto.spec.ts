@@ -1,4 +1,4 @@
-import { FindPayrollDto } from '../find.payroll.dto';
+import { FindPayrollDto } from './find.payroll.dto';
 
 describe('FindPayrollDto', () => {
   it('should be defined', () => {

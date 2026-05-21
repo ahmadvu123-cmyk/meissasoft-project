@@ -1,4 +1,4 @@
-import { FindWageStructure } from '../find.wage.structure';
+import { FindWageStructure } from './find.wage.structure';
 
 describe('FindWageStructure', () => {
   it('should be defined', () => {

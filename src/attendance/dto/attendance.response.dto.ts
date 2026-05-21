@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { AttendanceStatus } from "generated/prisma/enums";
+import { AttendanceStatus } from "@prisma/client";
 
 
 export class AttendanceResponseDto {

@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsInt, IsISO8601, IsNumber } from "class-validator";
-import { Currency, PaymentStatus } from "generated/prisma/enums";
+import { Currency, PaymentStatus } from "@prisma/client";
 
 export class CreatePayrollDto {
     @ApiProperty({ example: "1" })

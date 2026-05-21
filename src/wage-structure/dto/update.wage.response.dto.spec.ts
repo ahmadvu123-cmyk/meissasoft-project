@@ -1,4 +1,4 @@
-import { UpdateWageResponseDto } from '../update.wage.response.dto';
+import { UpdateWageResponseDto } from './update.wage.response.dto';
 
 describe('UpdateWageResponseDto', () => {
   it('should be defined', () => {

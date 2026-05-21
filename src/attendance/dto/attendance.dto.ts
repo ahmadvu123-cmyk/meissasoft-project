@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsInt, IsISO8601 } from "class-validator";
-import { AttendanceStatus } from "generated/prisma/enums";
+import { AttendanceStatus } from "@prisma/client";
 
 export class AttendanceDto {
     @ApiProperty({ example: '1990-01-30T00:00:00.000Z' })
