@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: ankane/pgvector
+    container_name: Pay_Wage_DB2
+    restart: always
+
+    ports:
+      - "5433:5432"
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_DB: Pay_Wage_DB
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
