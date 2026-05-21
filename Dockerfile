@@ -7,11 +7,10 @@ RUN apk add --no-cache openssl libc6-compat
 COPY package*.json ./
 RUN npm install
 
+COPY . .
 
-COPY prisma ./prisma
-COPY src ./src
-COPY tsconfig.json ./
-COPY nest-cli.json ./
+# 👇 IMPORTANT: run AFTER full copy
+RUN npx prisma generate --schema=./prisma/schema.prisma
 
 RUN npm run build
 
