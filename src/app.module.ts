@@ -13,12 +13,13 @@ import { JobsModule } from './jobs/jobs.module';
 import { EmbeddingsModule } from './embeddings/embeddings.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AgentsModule } from './agents/agents.module';
+import 'dotenv/config';
 
 
 
 @Module({
   imports: [WorkerModule, AttendanceModule, WageStructureModule, DeductionsModule, 
-    PayrollModule, PaymentsModule, ChatbotModule, EmbeddingsModule, JobsModule, ScheduleModule.forRoot(), AgentsModule],
+    PayrollModule, PaymentsModule, ChatbotModule, EmbeddingsModule, JobsModule, ScheduleModule.forRoot(), AgentsModule,],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
