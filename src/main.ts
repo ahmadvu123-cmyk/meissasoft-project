@@ -14,7 +14,7 @@ async function bootstrap() {
     .filter(Boolean);
 
   app.enableCors({
-    origin: corsOrigins,
+    origin: "pay-wage-frontend-production.up.railway.app",
     credentials: true,
   });
 
